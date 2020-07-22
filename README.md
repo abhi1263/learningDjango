@@ -1,2 +1,3 @@
-# learningDjango
-a 'Hello World' application in Django. As I learn further, will make this repo a tutorial for Django beginners
+# Learning Django
+A great way to learn a new technology is by making your hands dirty. This repo is dedicated for that: making my hands dirty with Django. 
+Over the time, I plan to turn the repo into 'Django Tutorial for Absolute Beginners'
