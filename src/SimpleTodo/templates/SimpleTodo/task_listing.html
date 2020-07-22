@@ -1,0 +1,37 @@
+{% extends "./base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col mt-4">
+        <form class="form-inline" action="{% url 'SimpleTodo:add_task' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" class="form-control mb-2 mr-sm-2" name="newTask" id="newTask" placeholder="Enter task">
+            <button type="submit" class="btn btn-primary mb-2">Add</button>
+
+        </form>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col">
+        {% if tasks %}
+        <h3>Pending tasks: </h3>
+        <table class="table" border="0">
+            <tbody>
+            {% for eachTask in tasks %}
+            <tr>
+                <th scope="row"><input type="checkbox" id="{{eachTask.id}}"></th>
+                <td>{{ eachTask.task_title }}</td>
+                <td><a class="btn btn-warning" href="{% url 'SimpleTodo:edit_task' eachTask.id %}">Edit</a></td>
+                <td><a class="btn btn-danger" href="{% url 'SimpleTodo:edit_task' eachTask.id %}">Delete</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+    </table>
+        {% else %}
+        <h3>You have no pending tasks</h3>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}
