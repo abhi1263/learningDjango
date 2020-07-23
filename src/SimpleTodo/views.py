@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Tasks
@@ -21,7 +21,19 @@ def add_task(request):
 
 
 def edit_task(request, task_id):
-    return HttpResponse("Task edited")
+    task = get_object_or_404(Tasks, pk=task_id)
+    context = {
+        'task': task
+    }
+    return render(request, './SimpleTodo/edit_task.html', context)
+
+
+def save_edit_task(request, task_id):
+    if request.method == "POST":
+        tasks = get_object_or_404(Tasks, pk=task_id)
+        tasks.task_title = request.POST['newTaskTitle']
+        tasks.save()
+        return HttpResponseRedirect(reverse('SimpleTodo:index'))
 
 
 def delete_task(request,  task_id):

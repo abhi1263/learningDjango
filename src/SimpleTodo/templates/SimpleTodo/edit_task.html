@@ -1,0 +1,14 @@
+{% extends "./base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col mt-4">
+        <form class="form-inline" action="{% url 'SimpleTodo:save_edit_task' task.id %}" method="POST">
+            {% csrf_token %}
+            <input type="text" class="form-control mb-2 mr-sm-2" name="newTaskTitle" id="newTaskTitle" value="{{ task.task_title }}">
+            <button type="submit" class="btn btn-primary mb-2">Add</button>
+
+        </form>
+    </div>
+</div>
+{% endblock content %}
