@@ -23,7 +23,7 @@
                 <th scope="row"><input type="checkbox" id="{{eachTask.id}}"></th>
                 <td>{{ eachTask.task_title }}</td>
                 <td><a class="btn btn-warning" href="{% url 'SimpleTodo:edit_task' eachTask.id %}">Edit</a></td>
-                <td><a class="btn btn-danger" href="{% url 'SimpleTodo:edit_task' eachTask.id %}">Delete</a></td>
+                <td><a class="btn btn-danger" href="{% url 'SimpleTodo:delete_task' eachTask.id %}" onclick="alert('Confirm Delete ?')">Delete</a></td>
             </tr>
             {% endfor %}
             </tbody>

@@ -37,4 +37,6 @@ def save_edit_task(request, task_id):
 
 
 def delete_task(request,  task_id):
-    return HttpResponse("Task deleted")
+    tasks = get_object_or_404(Tasks, pk=task_id)
+    tasks.delete()
+    return HttpResponseRedirect(reverse('SimpleTodo:index'))
