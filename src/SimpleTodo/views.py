@@ -40,3 +40,15 @@ def delete_task(request,  task_id):
     tasks = get_object_or_404(Tasks, pk=task_id)
     tasks.delete()
     return HttpResponseRedirect(reverse('SimpleTodo:index'))
+
+
+def update_task_status(request, task_id):
+    tasks = get_object_or_404(Tasks, pk=task_id)
+    if request.method == "GET":
+        if tasks.task_status:
+            tasks.task_status = False
+        else:
+            tasks.task_status = True
+        tasks.save()
+    return HttpResponse("Success")
+
