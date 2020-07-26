@@ -1,22 +1,5 @@
 {% extends "./base.html" %}
 
-
-{% block javascript %}
-<script>
-   function change_status(task_id) {
-        $.ajax({
-        url: 'task/'+task_id+'/change_status',
-        success: function (data) {
-          if (data=="Success") {
-                location.reload()
-          }
-        }
-      });
-   }
-</script>
-{% endblock javascript %}
-
-
 {% block content %}
 <div class="row">
     <div class="col mt-4">
@@ -37,14 +20,18 @@
             <tbody>
             {% for eachTask in tasks %}
             <tr>
-                <th scope="row"><input type="checkbox" name="task_status" onclick="change_status( {{ eachTask.id }} )" {% if eachTask.task_status %} checked {% endif %}></th>
+                <th scope="row">
+                    <form action="{% url 'SimpleTodo:update_task_status' eachTask.id %}" method="get">
+                        <input type="checkbox" name="task_status" onclick="this.form.submit()" {% if eachTask.task_status %} checked {% endif %}>
+                    </form>
+                </th>
                 {% if eachTask.task_status %}
                 <td id="{{eachTask.id}}"><del>{{ eachTask.task_title }}</del></td>
                 {% else %}
                 <td>{{ eachTask.task_title }}</td>
                 {% endif %}
                 <td><a class="btn btn-warning" href="{% url 'SimpleTodo:edit_task' eachTask.id %}">Edit</a></td>
-                <td><a class="btn btn-danger" href="{% url 'SimpleTodo:delete_task' eachTask.id %}" onclick="alert('Confirm Delete ?')">Delete</a></td>
+                <td><a class="btn btn-danger" href="{% url 'SimpleTodo:delete_task' eachTask.id %}" onclick="return confirm('Confirm Delete ?');">Delete</a></td>
             </tr>
             {% endfor %}
             </tbody>
