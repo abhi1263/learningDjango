@@ -16,8 +16,8 @@ def index(request):
 # to add task
 def add_task(request):
     if request.method == "POST":
-        new_task = request.POST['newTask']
-        tasks = Tasks(task_title=new_task)
+        new_task_title = request.POST['newTask']
+        tasks = Tasks(task_title=new_task_title)
         tasks.save()
         return HttpResponseRedirect(reverse('SimpleTodo:index'))
 
@@ -25,22 +25,20 @@ def add_task(request):
 # to edit task
 def edit_task(request, task_id):
     task = get_object_or_404(Tasks, pk=task_id)
-    context = {
-        'task': task
-    }
-    return render(request, './SimpleTodo/edit_task.html', context)
-
-
-# save the edit changes
-def save_edit_task(request, task_id):
-    if request.method == "POST":
-        tasks = get_object_or_404(Tasks, pk=task_id)
-        tasks.task_title = request.POST['newTaskTitle']
-        tasks.save()
+    if request.method == "GET":
+        ''' Fetches task object of the particular task and passes it to the form in the template '''
+        context = {
+            'task': task
+        }
+        return render(request, './SimpleTodo/edit_task.html', context)
+    else:
+        ''' Saves the changes to database after they are submitted by user  '''
+        task.task_title = request.POST['newTaskTitle']
+        task.save()
         return HttpResponseRedirect(reverse('SimpleTodo:index'))
 
 
-# delete task
+# delete a task
 def delete_task(request,  task_id):
     tasks = get_object_or_404(Tasks, pk=task_id)
     tasks.delete()
