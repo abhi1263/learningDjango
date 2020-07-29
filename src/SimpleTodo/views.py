@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth.forms import UserCreationForm
 from .models import Tasks
 
 
@@ -39,7 +40,7 @@ def edit_task(request, task_id):
 
 
 # delete a task
-def delete_task(request,  task_id):
+def delete_task(request, task_id):
     tasks = get_object_or_404(Tasks, pk=task_id)
     tasks.delete()
     return HttpResponseRedirect(reverse('SimpleTodo:index'))
@@ -56,3 +57,11 @@ def update_task_status(request, task_id):
         tasks.save()
     return HttpResponseRedirect(reverse('SimpleTodo:index'))
 
+
+# User registration page
+def user_register(request):
+    form = UserCreationForm()
+    context = {
+        'form': form
+    }
+    return render(request, './SimpleTodo/user_register.html', context)
