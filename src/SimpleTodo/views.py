@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 from .models import Tasks
+from .forms import CreateUserForm
 
 
 # to display all task listing
@@ -60,8 +61,18 @@ def update_task_status(request, task_id):
 
 # User registration page
 def user_register(request):
-    form = UserCreationForm()
-    context = {
-        'form': form
-    }
-    return render(request, './SimpleTodo/user_register.html', context)
+    if request.method == "GET":
+        form = CreateUserForm()
+        context = {
+            'form': form
+        }
+        return render(request, './SimpleTodo/user_register.html', context)
+    else:
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS, 'Account created successfully')
+            return HttpResponseRedirect(reverse('SimpleTodo:user_register'))
+        else:
+            messages.add_message(request, messages.ERROR, 'Something went wrong')
+            return HttpResponseRedirect(reverse('SimpleTodo:user_register'))
