@@ -4,9 +4,12 @@ from django.urls import reverse
 from django.contrib import messages
 from .models import Tasks
 from .forms import CreateUserForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 
 # to display all task listing
+@login_required(login_url='SimpleTodo:user_login')
 def index(request):
     tasks = Tasks.objects.all()
     context = {
@@ -16,6 +19,7 @@ def index(request):
 
 
 # to add task
+@login_required(login_url='SimpleTodo:user_login')
 def add_task(request):
     if request.method == "POST":
         new_task_title = request.POST['newTask']
@@ -25,6 +29,7 @@ def add_task(request):
 
 
 # to edit task
+@login_required(login_url='SimpleTodo:user_login')
 def edit_task(request, task_id):
     task = get_object_or_404(Tasks, pk=task_id)
     if request.method == "GET":
@@ -41,6 +46,7 @@ def edit_task(request, task_id):
 
 
 # delete a task
+@login_required(login_url='SimpleTodo:user_login')
 def delete_task(request, task_id):
     tasks = get_object_or_404(Tasks, pk=task_id)
     tasks.delete()
@@ -48,6 +54,7 @@ def delete_task(request, task_id):
 
 
 # change the status of the task('completed' or 'pending')
+@login_required(login_url='SimpleTodo:user_login')
 def update_task_status(request, task_id):
     tasks = get_object_or_404(Tasks, pk=task_id)
     if request.method == "GET":
@@ -59,7 +66,7 @@ def update_task_status(request, task_id):
     return HttpResponseRedirect(reverse('SimpleTodo:index'))
 
 
-# User registration page
+# User registration view
 def user_register(request):
     if request.method == "GET":
         form = CreateUserForm()
@@ -73,6 +80,29 @@ def user_register(request):
             form.save()
             messages.add_message(request, messages.SUCCESS, 'Account created successfully')
             return HttpResponseRedirect(reverse('SimpleTodo:user_register'))
+
+        messages.add_message(request, messages.ERROR, 'Something went wrong')
+        return HttpResponseRedirect(reverse('SimpleTodo:user_register'))
+
+
+# User login view
+def user_login(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse('SimpleTodo:index'))
         else:
-            messages.add_message(request, messages.ERROR, 'Something went wrong')
-            return HttpResponseRedirect(reverse('SimpleTodo:user_register'))
+            messages.add_message(request, messages.ERROR, 'Username or password incorrect')
+
+    context = {}
+    return render(request, './SimpleTodo/user_login.html', context)
+
+
+# User logout view
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('SimpleTodo:user_login'))

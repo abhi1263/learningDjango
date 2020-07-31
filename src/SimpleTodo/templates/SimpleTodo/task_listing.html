@@ -1,5 +1,10 @@
 {% extends "./base.html" %}
 
+{% block navbar-text %}
+<span>Hello, {{user.username}}</span>
+<span><a href="{% url 'SimpleTodo:user_logout' %}">Logout</a></span>
+{% endblock navbar-text %}
+
 {% block content %}
 <div class="row">
     <div class="col mt-4">

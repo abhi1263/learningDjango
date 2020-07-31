@@ -17,12 +17,12 @@ body {
 .form-control, .btn {
 	border-radius: 3px;
 }
-.signup-form {
+.signin-form {
 	width: 400px;
 	margin: 0 auto;
 	padding: 30px 0;
 }
-.signup-form form {
+.signin-form form {
 	color: #999;
 	border-radius: 3px;
 	margin-bottom: 15px;
@@ -30,60 +30,60 @@ body {
 	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
 	padding: 30px;
 }
-.signup-form h2 {
+.signin-form h2 {
 	color: #333;
 	font-weight: bold;
 	margin-top: 0;
 }
-.signup-form hr {
+.signin-form hr {
 	margin: 0 -30px 20px;
 }
-.signup-form .form-group {
+.signin-form .form-group {
 	margin-bottom: 20px;
 }
-.signup-form label {
+.signin-form label {
 	font-weight: normal;
 	font-size: 15px;
 }
-.signup-form .form-control {
+.signin-form .form-control {
 	min-height: 38px;
 	box-shadow: none !important;
 }
-.signup-form .input-group-addon {
+.signin-form .input-group-addon {
 	max-width: 42px;
 	text-align: center;
 }
-.signup-form .btn, .signup-form .btn:active {
+.signin-form .btn, .signin-form .btn:active {
 	font-size: 16px;
 	font-weight: bold;
 	background: #19aa8d !important;
 	border: none;
 	min-width: 140px;
 }
-.signup-form .btn:hover, .signup-form .btn:focus {
+.signin-form .btn:hover, .signin-form .btn:focus {
 	background: #179b81 !important;
 }
-.signup-form a {
+.signin-form a {
 	color: #fff;
 	text-decoration: underline;
 }
-.signup-form a:hover {
+.signin-form a:hover {
 	text-decoration: none;
 }
-.signup-form form a {
+.signin-form form a {
 	color: #19aa8d;
 	text-decoration: none;
 }
-.signup-form form a:hover {
+.signin-form form a:hover {
 	text-decoration: underline;
 }
-.signup-form .fa {
+.signin-form .fa {
 	font-size: 21px;
 }
-.signup-form .fa-paper-plane {
+.signin-form .fa-paper-plane {
 	font-size: 18px;
 }
-.signup-form .fa-check {
+.signin-form .fa-check {
 	color: #fff;
 	left: 17px;
 	top: 18px;
@@ -92,11 +92,11 @@ body {
 }
 </style>
 
-<div class="signup-form">
-    <form method="POST" action="{% url 'SimpleTodo:user_register' %}">
+<div class="signin-form">
+    <form method="POST" action="{% url 'SimpleTodo:user_login' %}">
         {% csrf_token %}
-		<h2>Sign Up</h2>
-		<p>Please fill in this form to create an account!</p>
+		<h2>Login</h2>
+		<p>Please enter your credentials !</p>
 		<hr>
         <div class="alerts">
             {% if messages %}
@@ -120,17 +120,7 @@ body {
 						<span class="fa fa-user"></span>
 					</span>
 				</div>
-				{{ form.username }}
-			</div>
-        </div>
-        <div class="form-group">
-			<div class="input-group">
-				<div class="input-group-prepend">
-					<span class="input-group-text">
-						<i class="fa fa-paper-plane"></i>
-					</span>
-				</div>
-				{{ form.email }}
+				<input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="Username">
 			</div>
         </div>
 		<div class="form-group">
@@ -140,28 +130,14 @@ body {
 						<i class="fa fa-lock"></i>
 					</span>
 				</div>
-				{{ form.password1 }}
-			</div>
-        </div>
-		<div class="form-group">
-			<div class="input-group">
-				<div class="input-group-prepend">
-					<span class="input-group-text">
-						<i class="fa fa-lock"></i>
-						<i class="fa fa-check"></i>
-					</span>
-				</div>
-				{{ form.password2 }}
+				<input type="password" class="form-control" id="password" name="password" placeholder="Password">
 			</div>
         </div>
 		<div class="form-group">
             <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
         </div>
     </form>
-	<div class="text-center">Already have an account? <a href="{% url 'SimpleTodo:user_login' %}">Login here</a></div>
+	<div class="text-center">Don't have an account? <a href="{% url 'SimpleTodo:user_register' %}">Signup here</a></div>
 </div>
 
 {% endblock content %}
-
-
-
