@@ -68,6 +68,9 @@ def update_task_status(request, task_id):
 
 # User registration view
 def user_register(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('SimpleTodo:index'))
+
     if request.method == "GET":
         form = CreateUserForm()
         context = {
@@ -87,6 +90,9 @@ def user_register(request):
 
 # User login view
 def user_login(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('SimpleTodo:index'))
+
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
