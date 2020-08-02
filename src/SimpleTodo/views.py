@@ -11,7 +11,8 @@ from django.contrib.auth.decorators import login_required
 # to display all task listing
 @login_required(login_url='SimpleTodo:user_login')
 def index(request):
-    tasks = Tasks.objects.all()
+    user = request.user
+    tasks = Tasks.objects.filter(user=user)
     context = {
         'tasks': tasks
     }
@@ -23,7 +24,8 @@ def index(request):
 def add_task(request):
     if request.method == "POST":
         new_task_title = request.POST['newTask']
-        tasks = Tasks(task_title=new_task_title)
+        user = request.user
+        tasks = Tasks(task_title=new_task_title, user=user)
         tasks.save()
         return HttpResponseRedirect(reverse('SimpleTodo:index'))
 
