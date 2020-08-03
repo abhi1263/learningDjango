@@ -34,7 +34,8 @@ def add_task(request):
 # to edit task
 @login_required(login_url='SimpleTodo:user_login')
 def edit_task(request, task_id):
-    task = get_object_or_404(Tasks, pk=task_id)
+    username = request.user
+    task = get_object_or_404(Tasks, pk=task_id, user=username)
     if request.method == "GET":
         ''' Fetches task object of the particular task and passes it to the form in the template '''
         context = {
@@ -51,7 +52,8 @@ def edit_task(request, task_id):
 # delete a task
 @login_required(login_url='SimpleTodo:user_login')
 def delete_task(request, task_id):
-    tasks = get_object_or_404(Tasks, pk=task_id)
+    username = request.user
+    tasks = get_object_or_404(Tasks, pk=task_id, user=username)
     tasks.delete()
     return HttpResponseRedirect(reverse('SimpleTodo:index'))
 
@@ -59,7 +61,8 @@ def delete_task(request, task_id):
 # change the status of the task('completed' or 'pending')
 @login_required(login_url='SimpleTodo:user_login')
 def update_task_status(request, task_id):
-    tasks = get_object_or_404(Tasks, pk=task_id)
+    username = request.user
+    tasks = get_object_or_404(Tasks, pk=task_id, user=username)
     if request.method == "GET":
         if tasks.task_status:
             tasks.task_status = False
