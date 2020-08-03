@@ -6,6 +6,7 @@ from .models import Tasks
 from .forms import CreateUserForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 
 
 # to display all task listing
@@ -86,8 +87,11 @@ def user_register(request):
             messages.add_message(request, messages.SUCCESS, 'Account created successfully')
             return HttpResponseRedirect(reverse('SimpleTodo:user_register'))
 
-        messages.add_message(request, messages.ERROR, 'Something went wrong')
-        return HttpResponseRedirect(reverse('SimpleTodo:user_register'))
+        else:
+            context = {
+                'form': form
+            }
+            return render(request, './SimpleTodo/user_register.html', context)
 
 
 # User login view
