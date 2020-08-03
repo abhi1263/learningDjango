@@ -86,12 +86,8 @@ def user_register(request):
             form.save()
             messages.add_message(request, messages.SUCCESS, 'Account created successfully')
             return HttpResponseRedirect(reverse('SimpleTodo:user_register'))
-
         else:
-            context = {
-                'form': form
-            }
-            return render(request, './SimpleTodo/user_register.html', context)
+            return render(request, './SimpleTodo/user_register.html', {'form': form})
 
 
 # User login view
